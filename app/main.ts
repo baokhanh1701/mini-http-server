@@ -10,12 +10,11 @@ const server = net.createServer((socket: any) => {
     } catch (error) {
       var string = data.toString();
       console.log(string);
-    };
-    socket.on("error", (error : any) => {
-        console.log(error);
-        socket.write(`HTTP/1.1 404 Not Found\r\n\r\n`);
-        socket.end();
-    });
+    }
+  });
+  socket.on("error", (error: any) => {
+    console.log(error);
+    throw error;
   });
   socket.end();
 });
@@ -26,4 +25,8 @@ console.log("Logs from your program will appear here!");
 // Uncomment this to pass the first stage
 server.listen(4221, "localhost", () => {
   console.log("Server is running on port 4221");
+});
+
+server.listen("/index.html", "localhost", (req : any, res : any) => {
+    console.log("getting index.html...");
 });
