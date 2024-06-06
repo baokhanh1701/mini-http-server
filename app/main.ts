@@ -34,10 +34,10 @@ const server = net.createServer((socket: any) => {
       console.log(string);
     }
   });
-  socket.on("error", (error: any) => {
-    console.log(error);
-    throw error;
-  });
+  // socket.on("error", (error: any) => {
+  //   console.log(error);
+  //   throw error;
+  // });
   // socket.end();
 });
 
