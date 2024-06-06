@@ -5,7 +5,11 @@ const server = net.createServer((socket: any) => {
   socket.on("data", (data: any) => {
     try {
       console.log(data.toString());
-      socket.write(`HTTP/1.1 200 OK\r\n\r\n`);
+      // socket.write(`HTTP/1.1 200 OK\r\n\r\n`);
+      const req = data.toString();
+      const path = req.split(' ')[1];
+      const res = path === '/' ? `HTTP/1.1 200 OK\r\n\r\n` : "HTTP/1.1 404 Not Found\r\n\r\n";
+      socket.write(res);
       socket.end();
     } catch (error) {
       var string = data.toString();
