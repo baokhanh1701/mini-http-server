@@ -19,7 +19,7 @@ const server = net.createServer((socket: any) => {
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
-        res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\n${query}`;
+        res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length()}\r\n\r\n${query}`;
       } else {
         res = `HTTP/1.1 404 Not Found\r\n\r\n`;
       }
