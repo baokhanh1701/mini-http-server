@@ -25,7 +25,7 @@ const server = net.createServer((socket: any) => {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
         console.log("Response: ", res);
       } else if (path === `/user-agent`) {
-        res = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 12\r\n\r\nfoobar/1.2.3"
+        res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 12\r\n\r\n${userAgent}`;
       } 
       
       else {
