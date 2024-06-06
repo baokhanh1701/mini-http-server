@@ -14,7 +14,7 @@ const server = net.createServer((socket: any) => {
       const path = req.split("\r\n")[0].split(" ")[1];
       console.log("path: ", path);
       const query = req.split(" ")[1].split("/")[2];
-      const userAgent = req.split("\r\n")[3];
+      const userAgent = req.split("\r\n");
       console.log("User Agent: ", userAgent);
       console.log("query: ", query);
       let res = "";
