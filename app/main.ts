@@ -1,14 +1,30 @@
 import * as net from "net";
 
-const server = net.createServer((socket: any) => {
-  // socket.write(`HTTP/1.1 200 OK\r\n\r\n`);
+//  * Normal Request: GET /index.html HTTP/1.1\r\nHost: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
+// Request Line: GET /index.html HTTP/1.1\r\n
+// Headers: Host: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
+//  * GET /echo/abc HTTP/1.1\r\n Host: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
+//  * Normal Response with body: HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc
+
+const server = net.createServer((socket: any) => {  
   socket.on("data", (data: any) => {
     try {
-      console.log(data.toString());
-      // socket.write(`HTTP/1.1 200 OK\r\n\r\n`);
       const req = data.toString();
-      const path = req.split(' ')[1];
-      const res = path === '/' ? `HTTP/1.1 200 OK\r\n\r\n` : "HTTP/1.1 404 Not Found\r\n\r\n";
+      console.log(req);
+      const path = req.split("\r\n")[0].split(" ")[1];
+      console.log(path);
+      let res = "";
+      if (path === "/") {
+        res = `HTTP/1.1 200 OK\r\n\r\n`;
+      } else if (path === `/echo/${query}`) {
+        res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc`
+      } else {
+        res = `HTTP/1.1 404 Not Found\r\n\r\n`;
+      }
+      // res =
+      //   path === "/"
+      //     ? `HTTP/1.1 200 OK\r\n\r\n`
+      //     : "HTTP/1.1 404 Not Found\r\n\r\n";
       socket.write(res);
       socket.end();
     } catch (error) {
@@ -16,10 +32,10 @@ const server = net.createServer((socket: any) => {
       console.log(string);
     }
   });
-  // socket.on("error", (error: any) => {
-  //   console.log(error);
-  //   throw error;
-  // });
+  socket.on("error", (error: any) => {
+    console.log(error);
+    throw error;
+  });
   // socket.end();
 });
 
