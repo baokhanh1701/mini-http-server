@@ -30,7 +30,3 @@ console.log("Logs from your program will appear here!");
 server.listen(4221, "localhost", () => {
   console.log("Server is running on port 4221");
 });
-
-server.listen("/index.html", "localhost", (req : any, res : any) => {
-    console.log("getting index.html...");
-});
