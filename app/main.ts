@@ -11,7 +11,7 @@ const server = net.createServer((socket: any) => {
     try {
       const req = data.toString();
       console.log(req);
-      const path = req.split("\r\n")[0].split(" ")[1];
+      const path = req.split("\r\n")[0];
       console.log("path: ", path);
       let res = "";
       if (path === "/") {
