@@ -12,7 +12,7 @@ const server = net.createServer((socket: any) => {
       const req = data.toString();
       console.log(req);
       const path = req.split("\r\n")[0].split(" ")[1];
-      console.log(path);
+      console.log("path: ", path);
       let res = "";
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
