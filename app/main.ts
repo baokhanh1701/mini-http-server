@@ -14,6 +14,8 @@ const server = net.createServer((socket: any) => {
       const path = req.split("\r\n")[0].split(" ")[1];
       console.log("path: ", path);
       const query = req.split(" ")[1].split("/")[2];
+      const userAgent = req.split(" ")[1];
+      console.log("User Agent: ", userAgent);
       console.log("query: ", query);
       let res = "";
       if (path === "/") {
@@ -22,7 +24,11 @@ const server = net.createServer((socket: any) => {
       } else if (path === `/echo/${query}`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
         console.log("Response: ", res);
-      } else {
+      } else if (path === `/user-agent`) {
+        res = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 12\r\n\r\nfoobar/1.2.3"
+      } 
+      
+      else {
         res = `HTTP/1.1 404 Not Found\r\n\r\n`;
         console.log("Response: ", res);
       }
