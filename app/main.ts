@@ -16,11 +16,11 @@ const server = net.createServer((socket: any) => {
       console.log(string);
     }
   });
-  socket.on("error", (error: any) => {
-    console.log(error);
-    throw error;
-  });
-  socket.end();
+  // socket.on("error", (error: any) => {
+  //   console.log(error);
+  //   throw error;
+  // });
+  // socket.end();
 });
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
