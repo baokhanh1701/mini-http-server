@@ -23,10 +23,7 @@ const server = net.createServer((socket: any) => {
       } else {
         res = `HTTP/1.1 404 Not Found\r\n\r\n`;
       }
-      // res =
-      //   path === "/"
-      //     ? `HTTP/1.1 200 OK\r\n\r\n`
-      //     : "HTTP/1.1 404 Not Found\r\n\r\n";
+      console.log("Response: ", res);
       socket.write(res);
       socket.end();
     } catch (error) {
@@ -34,11 +31,6 @@ const server = net.createServer((socket: any) => {
       console.log(string);
     }
   });
-  // socket.on("error", (error: any) => {
-  //   console.log(error);
-  //   throw error;
-  // });
-  // socket.end();
 });
 
 // You can use print statements as follows for debugging, they'll be visible when running tests.
