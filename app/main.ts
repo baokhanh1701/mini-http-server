@@ -15,13 +15,19 @@ const server = net.createServer((socket: any) => {
       console.log("path: ", path);
       const query = req.split(" ")[1].split("/")[2];
       console.log("query: ", query);
+      let res = "";
       if (path === "/") {
-        socket.write(`HTTP/1.1 200 OK\r\n\r\n`);
+        res = `HTTP/1.1 200 OK\r\n\r\n`;
+        console.log("Response: ", res);
       } else if (path === `/echo/${query}`) {
-        socket.write(`HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length()}\r\n\r\n${query}`);
+        res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length()}\r\n\r\n${query}`;
+        console.log("Response: ", res);
       } else {
-        socket.write(`HTTP/1.1 404 Not Found\r\n\r\n`);
+        res = `HTTP/1.1 404 Not Found\r\n\r\n`;
+        console.log("Response: ", res);
       }
+      
+      socket.write(res);
       socket.end();
     } catch (error) {
       var string = data.toString();
