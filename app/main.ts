@@ -23,7 +23,10 @@ function searchDirectory(query:string) {
     for (const object of objects_in_dir) {
       console.log("files in dir: ", object);
     }
+  } catch (err) {
+    console.log(err);
   }
+
 }
 
 const server = net.createServer((socket: any) => {
