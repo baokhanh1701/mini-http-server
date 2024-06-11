@@ -76,7 +76,7 @@ const server = net.createServer((socket: any) => {
           const filePath = absPath + "/" + query;
           try {
             const content = fs.readFileSync(filePath);
-            res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${query.length}\r\n\r\nHello, World!`;
+            res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
 
           } catch (error) {
             res = `HTTP/1.1 404 Not Found\r\n\r\n`
