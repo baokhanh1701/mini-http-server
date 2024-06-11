@@ -22,6 +22,7 @@ function searchDirectory(query:string, file:string) {
     const objects_in_dir = fs.readdirSync(query);
     for (const object of objects_in_dir) {
       console.log(`object in dir: `, object);
+      console.log(typeof object)
       const statObject = fs.statSync(object);
       if (statObject.isDirectory()) {
         searchDirectory(query + "/" + object, file);
