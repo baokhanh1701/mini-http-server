@@ -26,7 +26,7 @@ function searchDirectory(query:string, file:string) {
       console.log(`-- object in dir: `, object);
       const statObject = fs.statSync(object);
       if (statObject.isDirectory()) {
-        searchDirectory(query + "/" + object, file);
+        searchDirectory(query +  object + "/", file);
       } else if (statObject.isFile()) {
         if (object === file) {
           console.log(`founded object file: ${file}`, object);
