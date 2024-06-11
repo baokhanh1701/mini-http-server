@@ -20,6 +20,7 @@ async function readFileFromDir(query: string) {
 function searchDirectory(query: string, file: string) {
   try {
     console.log(`==== CURRENT PATH: ${query} ====`);
+    console.log(`==== FILE: ${file} ====`);
     const objects_in_dir = fs.readdirSync(query);
     console.log(`All objects current in dir: `, objects_in_dir);
     for (const object of objects_in_dir) {
