@@ -32,12 +32,13 @@ function searchDirectory(query: string, file: string) {
         } else if (statObject.isFile()) {
           if (object === file) {
             console.log(`founded object file: ${file}`, object);
-            return true;
+            break;
           }
         } else {
           return false;
         }
       }
+      return true;
     } else {
       console.log("No objects in dir");
       return false;
