@@ -32,13 +32,12 @@ function searchDirectory(query: string, file: string) {
         } else if (statObject.isFile()) {
           if (object === file) {
             console.log(`founded object file: ${file}`, object);
-            break;
+            return true;
           }
         } else {
           return false;
         }
       }
-      return true;
     } else {
       console.log("No objects in dir");
       return false;
@@ -71,7 +70,8 @@ const server = net.createServer((socket: any) => {
       } else if (path === `/files/${query}`) {
         try {
           // const data = readFileFromDir(query);
-          searchDirectory("./", "main.ts");
+          // searchDirectory("./", query);
+          console.log(`query: `, query);
           res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${query.length}\r\n\r\nHello, World!`;
         } catch (error) {
           res = `HTTP/1.1 404 Not Found\r\n\r\n`;
