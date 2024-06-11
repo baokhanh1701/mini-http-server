@@ -1,4 +1,5 @@
 import * as net from "net";
+import fs from "node:fs";
 
 //  * Normal Request: GET /index.html HTTP/1.1\r\nHost: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
 // Request Line: GET /index.html HTTP/1.1\r\n
@@ -6,7 +7,26 @@ import * as net from "net";
 //  * GET /echo/abc HTTP/1.1\r\n Host: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
 //  * Normal Response with body: HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc
 
-const server = net.createServer((socket: any) => {  
+async function readFileFromDir(query:string) {
+  try {
+    const data = fs.readFileSync(query);
+    return data;
+  } catch (e) {
+    console.log(e)
+    return null;
+  }
+}
+
+function searchDirectory(query:string) {
+  try {
+    const objects_in_dir = fs.readdirSync(query);
+    for (const object of objects_in_dir) {
+      console.log("files in dir: ", object);
+    }
+  }
+}
+
+const server = net.createServer((socket: any) => {
   socket.on("data", (data: any) => {
     try {
       const req = data.toString();
@@ -26,13 +46,18 @@ const server = net.createServer((socket: any) => {
         console.log("Response: ", res);
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
-      } 
-      
-      else {
+      } else if (path === `/files/${query}`) {
+        try {
+          // const data = readFileFromDir(query);
+          searchDirectory("../")
+          res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${query.length}\r\n\r\nHello, World!`;
+        } catch (error) {
+          res = `HTTP/1.1 404 Not Found\r\n\r\n`;
+        }
+      } else {
         res = `HTTP/1.1 404 Not Found\r\n\r\n`;
         console.log("Response: ", res);
       }
-      
       socket.write(res);
       socket.end();
     } catch (error) {
