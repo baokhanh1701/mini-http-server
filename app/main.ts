@@ -7,26 +7,26 @@ import fs from "node:fs";
 //  * GET /echo/abc HTTP/1.1\r\n Host: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
 //  * Normal Response with body: HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 3\r\n\r\nabc
 
-async function readFileFromDir(query:string) {
+async function readFileFromDir(query: string) {
   try {
     const data = fs.readFileSync(query);
     return data;
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return null;
   }
 }
 
-function searchDirectory(query:string, file:string) {
+function searchDirectory(query: string, file: string) {
   try {
     console.log(`==== CURRENT PATH: ${query} ====`);
     const objects_in_dir = fs.readdirSync(query);
     console.log(`All objects current in dir: `, objects_in_dir);
     for (const object of objects_in_dir) {
       console.log(`-- object in dir: `, object);
-      const statObject = fs.statSync(object);
+      const statObject = fs.statSync(query + object);
       if (statObject.isDirectory()) {
-        searchDirectory(query +  object + "/", file);
+        searchDirectory(query + object + "/", file);
       } else if (statObject.isFile()) {
         if (object === file) {
           console.log(`founded object file: ${file}`, object);
@@ -39,7 +39,6 @@ function searchDirectory(query:string, file:string) {
   } catch (err) {
     console.log("searchDirectory Error Log: ", err);
   }
-
 }
 
 const server = net.createServer((socket: any) => {
@@ -65,7 +64,7 @@ const server = net.createServer((socket: any) => {
       } else if (path === `/files/${query}`) {
         try {
           // const data = readFileFromDir(query);
-          searchDirectory("./", "main.ts")
+          searchDirectory("./", "main.ts");
           res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${query.length}\r\n\r\nHello, World!`;
         } catch (error) {
           res = `HTTP/1.1 404 Not Found\r\n\r\n`;
