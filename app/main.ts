@@ -35,7 +35,7 @@ function searchDirectory(query:string, file:string) {
       }
     }
   } catch (err) {
-    console.log(err);
+    console.log("searchDirectory Error Log: ", err);
   }
 
 }
