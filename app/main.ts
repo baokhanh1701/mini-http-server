@@ -72,6 +72,8 @@ const server = net.createServer((socket: any) => {
           // const data = readFileFromDir(query);
           // searchDirectory("./", query);
           console.log(`query: `, query);
+          const args = process.argv.slice(2);
+          console.log(`args: `, args);
           res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${query.length}\r\n\r\nHello, World!`;
         } catch (error) {
           res = `HTTP/1.1 404 Not Found\r\n\r\n`;
