@@ -17,11 +17,22 @@ async function readFileFromDir(query:string) {
   }
 }
 
-function searchDirectory(query:string) {
+function searchDirectory(query:string, file:string) {
   try {
     const objects_in_dir = fs.readdirSync(query);
     for (const object of objects_in_dir) {
-      console.log("files in dir: ", object);
+      console.log(`object in dir: ${query}`, object);
+      const statObject = fs.statSync(object);
+      if (statObject.isDirectory()) {
+        searchDirectory(query + "/" + object, file);
+      } else if (statObject.isFile()) {
+        if (object === file) {
+          console.log(`founded object file: ${file}`, object);
+          return true;
+        }
+      } else {
+        return false;
+      }
     }
   } catch (err) {
     console.log(err);
