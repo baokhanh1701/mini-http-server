@@ -73,7 +73,7 @@ const server = net.createServer((socket: any) => {
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content, typeof content === "string");
  
-      const compression = req.split("Accept-Encoding")[1].split(": ");
+      const compression = req.split("\r\n").split("Accept-Encoding")[1].split(": ");
       console.log("-- compression: ", compression);
       let res = "";
       if (path === "/") {
