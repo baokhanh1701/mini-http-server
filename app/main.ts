@@ -62,6 +62,7 @@ const server = net.createServer((socket: any) => {
       console.log("-- User Agent: ", userAgent);
       console.log("-- query: ", query);
       console.log("-- method: ", method);
+      console.log("-- content: ", content);
       let res = "";
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
