@@ -64,7 +64,7 @@ function extractHeader(request: string): { [headerKey: string]: string } {
 
 function extractPath(request: string): { 
   method: string,
-  path: string[],
+  path: string,
   protocol: string
 } {
   const lines = request.split("\r\n");
@@ -72,7 +72,7 @@ function extractPath(request: string): {
   const [method, path, protocol] = firstLine.split(" ");
   return {
     method,
-    path: path.split("/").filter((value) => value != ""),
+    path,
     protocol,
   };
 }
