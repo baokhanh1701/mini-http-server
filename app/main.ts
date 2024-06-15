@@ -48,13 +48,12 @@ function searchDirectory(query: string, file: string) {
 }
 
 const server = net.createServer((socket: any) => {
-  console.log("----LOGGING----")
+  console.log("------------LOGGING------------")
   socket.on("data", (data: any) => {
     try {
-      console.log("--------------------------------")
       const req = data.toString();
       console.log("REQUEST: ", req);
-
+      const line = req.spit("\r\n").trim();
       const path = req.split("\r\n")[0].split(" ")[1];
       console.log("-- path: ", path);
 
@@ -72,7 +71,7 @@ const server = net.createServer((socket: any) => {
 
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content, typeof content === "string");
- 
+
       const compression = req.split("Accept-Encoding")[1];
       console.log("-- compression: ", compression);
       let res = "";
