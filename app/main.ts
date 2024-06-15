@@ -81,6 +81,7 @@ const server = net.createServer((socket: any) => {
               });
               res = `HTTP/1.1 201 Created\r\n\r\n`;
             } catch (error) {
+              console.log("Something wrong with POST file.")
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           } else {
@@ -90,6 +91,7 @@ const server = net.createServer((socket: any) => {
               const content = fs.readFileSync(filePath);
               res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
             } catch (error) {
+              console.log("Something wrong with GET file.")
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           }
