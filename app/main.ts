@@ -109,7 +109,7 @@ const server = net.createServer((socket: any) => {
           const gzipped = zlib.gzipSync(buffer);
           console.log("buffer: ", buffer);
           console.log("gzipped: ", gzipped);
-          socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n`);
+          socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${gzipped.length}\r\n\r\n`);
           socket.write(gzipped);
           console.log("done zipping");
         } else {
