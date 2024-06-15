@@ -68,7 +68,10 @@ const server = net.createServer((socket: any) => {
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
-        res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
+        if (compression) {
+          res = `HTTP/1.1 200 OK\r\nContent-Encoding: ${compression}\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
+        }
+        else res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
