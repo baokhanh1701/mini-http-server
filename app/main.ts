@@ -110,7 +110,7 @@ const server = net.createServer((socket: any) => {
             if (err) {
               console.error('An error occurred:', err);
             }
-            console.log(buffer.toString()););
+            console.log(buffer.toString()));
           res = `HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${gzipped}`;
         } else {
           console.log("gzip header not supported, processing...");
