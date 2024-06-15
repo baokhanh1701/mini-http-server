@@ -53,7 +53,10 @@ const server = net.createServer((socket: any) => {
     try {
       const req = data.toString();
       console.log("REQUEST: ", req);
+      
       const line = req.spit("\r\n").trim();
+      console.log("-- line: ", line);
+
       const path = req.split("\r\n")[0].split(" ")[1];
       console.log("-- path: ", path);
 
@@ -65,9 +68,6 @@ const server = net.createServer((socket: any) => {
 
       const method = req.split(" ")[0];
       console.log("-- method: ", method);
-
-      const debugging = req.split("\r\n");
-      console.log("debugging: ", debugging);
 
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content, typeof content === "string");
