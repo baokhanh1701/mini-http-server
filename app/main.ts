@@ -67,6 +67,7 @@ const server = net.createServer((socket: any) => {
       const method = req.split(" ")[0];
       console.log("-- method: ", method);
 
+      const debugging = req.split("\r\n");
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content);
 
