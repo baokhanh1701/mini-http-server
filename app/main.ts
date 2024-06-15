@@ -62,16 +62,38 @@ function extractHeader(request: string): { [headerKey: string]: string } {
   return headers;
 }
 
+function extractPath(request: string): { 
+  method: string,
+  path: string[],
+  protocol: string
+} {
+  const lines = request.split("\r\n");
+  const firstLine = lines[0];
+  const [method, path, protocol] = firstLine.split(" ");
+  return {
+    method,
+    path: path.split("/").filter((value) => value != ""),
+    protocol,
+  };
+}
+
+
 const server = net.createServer((socket: any) => {
   console.log("------------LOGGING------------");
   socket.on("data", (data: any) => {
     try {
       const req = data.toString();
       console.log("REQUEST: ", req);
+      
       const headers = extractHeader(req)
-      console.log("headers: ", headers);
-      const path = req.split("\r\n")[0].split(" ")[1];
+      console.log("-- headers: ", headers);
+
+      const {method, path, protocol} = extractPath(req);
+      console.log("-- method: ", method);
       console.log("-- path: ", path);
+      console.log("-- protocol: ", protocol);
+      // const path = req.split("\r\n")[0].split(" ")[1];
+      // console.log("-- path: ", path);
 
       const query = req.split(" ")[1].split("/")[2];
       console.log("-- query: ", query);
@@ -79,8 +101,8 @@ const server = net.createServer((socket: any) => {
       const userAgent = req.split("\r\n")[2].split(" ")[1];
       console.log("-- User Agent: ", userAgent);
 
-      const method = req.split(" ")[0];
-      console.log("-- method: ", method);
+      // const method = req.split(" ")[0];
+      // console.log("-- method: ", method);
 
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content, typeof content === "string");
