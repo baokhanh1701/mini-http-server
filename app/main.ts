@@ -57,7 +57,7 @@ const server = net.createServer((socket: any) => {
       const method = req.split(" ")[0];
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
 
-      console.log("Request: ", req);
+      console.log("REQUEST: ", req);
       console.log("-- path: ", path);
       console.log("-- User Agent: ", userAgent);
       console.log("-- query: ", query);
@@ -74,7 +74,7 @@ const server = net.createServer((socket: any) => {
         try {
           if (method == "POST") {
             try {
-              fs.appendFileSync(query, content, function (err: any, data: any) {
+              fs.appendFileSync(`/files/${query}`, content, function (err: any, data: any) {
                 if (err) throw err;
                 console.log("Saved file.");
               });
