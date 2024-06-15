@@ -51,27 +51,26 @@ const server = net.createServer((socket: any) => {
   socket.on("data", (data: any) => {
     try {
       const req = data.toString();
-      console.log("Request: ", req);
       const path = req.split("\r\n")[0].split(" ")[1];
-      console.log("path: ", path);
       const query = req.split(" ")[1].split("/")[2];
       const userAgent = req.split("\r\n")[2].split(" ")[1];
-      console.log("User Agent: ", userAgent);
-      console.log("query: ", query);
+      const method = req.split("\r\n")[2].split(" ");
+      console.log("Request: ", req);
+      console.log("-- path: ", path);
+      console.log("-- User Agent: ", userAgent);
+      console.log("-- query: ", query);
+      console.log("-- method: ", method);
       let res = "";
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
-        console.log("Response: ", res);
       } else if (path === `/echo/${query}`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
-        console.log("Response: ", res);
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
         try {
           // const data = readFileFromDir(query);
           // searchDirectory("./", query);
-          console.log(`query: `, query);
           const [___, absPath] = process.argv.slice(2);
           const filePath = absPath + "/" + query;
           try {
