@@ -84,6 +84,7 @@ const server = net.createServer((socket: any) => {
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
+        console.log("uh huh its still working")
         try {
           if (method == "POST") {
             try {
