@@ -107,7 +107,7 @@ const server = net.createServer((socket: any) => {
           console.log("gzip header supported, processing...");
           // const buffer = Buffer.from(query, "utf8");
           const gzipped = zlib.gzipSync(query);
-          socket.write( `HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n` );
+          socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n`);
           socket.write(gzipped);
         } else {
           console.log("gzip header not supported, processing...");
