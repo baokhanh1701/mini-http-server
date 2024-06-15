@@ -51,6 +51,7 @@ const server = net.createServer((socket: any) => {
   console.log("----LOGGING----")
   socket.on("data", (data: any) => {
     try {
+      console.log("--------------------------------")
       const req = data.toString();
       const path = req.split("\r\n")[0].split(" ")[1];
       const query = req.split(" ")[1].split("/")[2];
