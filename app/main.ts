@@ -101,7 +101,7 @@ const server = net.createServer((socket: any) => {
             }
           } else {
             const [___, absPath] = process.argv.slice(2);
-            const filePath = absPath + "/" + query;
+            const filePath = absPath + "/" + query; 
             try {
               const content = fs.readFileSync(filePath);
               res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
