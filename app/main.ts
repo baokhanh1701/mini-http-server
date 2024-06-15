@@ -123,8 +123,10 @@ const server = net.createServer((socket: any) => {
       socket.write(res);
       socket.end();
     } catch (error) {
+      console.log("Something wrong with this server connection.");
       var string = data.toString();
       console.log(string);
+      
     }
   });
 });
