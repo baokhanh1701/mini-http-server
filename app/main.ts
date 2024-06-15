@@ -56,13 +56,14 @@ const server = net.createServer((socket: any) => {
       const userAgent = req.split("\r\n")[2].split(" ")[1];
       const method = req.split(" ")[0];
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
-
+      const compression = req.split("\r\n")
       console.log("REQUEST: ", req);
       console.log("-- path: ", path);
       console.log("-- User Agent: ", userAgent);
       console.log("-- query: ", query);
       console.log("-- method: ", method);
       console.log("-- content: ", content);
+      console.log("-- compression: ", compression)
       let res = "";
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
