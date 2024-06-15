@@ -50,12 +50,22 @@ function searchDirectory(query: string, file: string) {
 const server = net.createServer((socket: any) => {
   console.log("------------LOGGING------------")
   socket.on("data", (data: any) => {
-    try {
+    try {  
       const req = data.toString();
       console.log("REQUEST: ", req);
-      
-      const line = req.split("\r\n");
-      console.log("-- line: ", line);
+
+      const headers: { [headerKey: string]: string } = {};
+
+      const lines = req.split("\r\n");
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        if (line === "") {
+          break;
+        }
+        const [headerKey, headerValue] = line.split(": ");
+        headers[headerKey] = headerValue;
+        console.log(headers)
+      }
 
       const path = req.split("\r\n")[0].split(" ")[1];
       console.log("-- path: ", path);

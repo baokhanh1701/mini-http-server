@@ -28,8 +28,26 @@ export default class HttpHandler {
     const [method, path, protocol] = firstLine.split(" ");
     return {
       method,
-      path: path.split("/"),
+      path: path.split("/").filter((value) => value != ""),
       protocol,
     };
+  }
+  
+  private HttpResponseBuilder (
+    statusCode: number,
+    statusMessage: string,
+    headers: { [headerKey: string]: string },
+    body?: string
+  ) : string {
+    const headerLines = Object.keys(headers).map((headerKey) => {
+      return `${headerKey}: ${headers[headerKey]}`;
+    });
+    const response = [
+      `HTTP/1.1 ${statusCode} ${statusMessage}`,
+     ...headerLines,
+      "",
+      body,
+    ].join("\r\n");
+    return response;
   }
 }
