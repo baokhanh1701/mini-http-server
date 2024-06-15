@@ -55,6 +55,8 @@ const server = net.createServer((socket: any) => {
       const query = req.split(" ")[1].split("/")[2];
       const userAgent = req.split("\r\n")[2].split(" ")[1];
       const method = req.split(" ")[0];
+      const content = req.split("\r\n");
+
       console.log("Request: ", req);
       console.log("-- path: ", path);
       console.log("-- User Agent: ", userAgent);
@@ -71,16 +73,22 @@ const server = net.createServer((socket: any) => {
         try {
           // const data = readFileFromDir(query);
           // searchDirectory("./", query);
-          const [___, absPath] = process.argv.slice(2);
-          const filePath = absPath + "/" + query;
-          try {
-            const content = fs.readFileSync(filePath);
-            res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
-
-          } catch (error) {
-            res = `HTTP/1.1 404 Not Found\r\n\r\n`
+          if (method == "POST") {
+            try {
+              res = `HTTP/1.1 201 Created\r\n\r\n`;
+            } catch (error) {
+              res = `HTTP/1.1 404 Not Found\r\n\r\n`;
+            }
+          } else {
+            const [___, absPath] = process.argv.slice(2);
+            const filePath = absPath + "/" + query;
+            try {
+              const content = fs.readFileSync(filePath);
+              res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
+            } catch (error) {
+              res = `HTTP/1.1 404 Not Found\r\n\r\n`;
+            }
           }
-          
         } catch (error) {
           res = `HTTP/1.1 404 Not Found\r\n\r\n`;
         }
