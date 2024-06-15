@@ -75,7 +75,7 @@ const server = net.createServer((socket: any) => {
           if (method == "POST") {
             try {
               console.log("Creating file...");
-              fs.writeFileSync(
+              fs.writeFile(
                 `/files/${query}`,
                 string(content),
                 function (err: any) {
