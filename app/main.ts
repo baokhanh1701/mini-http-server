@@ -55,7 +55,7 @@ const server = net.createServer((socket: any) => {
       const query = req.split(" ")[1].split("/")[2];
       const userAgent = req.split("\r\n")[2].split(" ")[1];
       const method = req.split(" ")[0];
-      const content = req.split("\r\n")[-1];
+      const content = req.split("\r\n")[req.split("\r\n").length - 1];
 
       console.log("Request: ", req);
       console.log("-- path: ", path);
@@ -76,7 +76,6 @@ const server = net.createServer((socket: any) => {
           // searchDirectory("./", query);
           if (method == "POST") {
             try {
-
               res = `HTTP/1.1 201 Created\r\n\r\n`;
             } catch (error) {
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
