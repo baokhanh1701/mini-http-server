@@ -74,15 +74,21 @@ const server = net.createServer((socket: any) => {
         try {
           if (method == "POST") {
             try {
-              console.log("Creating file...")
-              fs.appendFileSync(`/files/${query}`, string(content), function (err: any, data: any) {
-                if (err) throw err;
-                console.log("Saving file.");
-              });
+              console.log("Creating file...");
+              fs.appendFileSync(
+                `/files/${query}`,
+                string(content),
+                function (err: any) {
+                  if (err) {
+                    throw err;
+                  }
+                  console.log("Saving file.");
+                }
+              );
               console.log("Created and saved file.");
               res = `HTTP/1.1 201 Created\r\n\r\n`;
             } catch (error) {
-              console.log("Something wrong with POST file.")
+              console.log("Something wrong with POST file.");
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           } else {
@@ -92,7 +98,7 @@ const server = net.createServer((socket: any) => {
               const content = fs.readFileSync(filePath);
               res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
             } catch (error) {
-              console.log("Something wrong with GET file.")
+              console.log("Something wrong with GET file.");
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           }
