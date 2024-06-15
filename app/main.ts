@@ -70,6 +70,7 @@ const server = net.createServer((socket: any) => {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
         if ("gzip" in compression) {
+          console.log("gzip header supported, processing...");
           res = `HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
         } else {
           res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
