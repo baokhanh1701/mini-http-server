@@ -99,7 +99,7 @@ const server = net.createServer((socket: any) => {
               console.log("Something wrong with POST file.");
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
-          } else {
+          } else if (method == "GET") {
             console.log("Do we even reach here?");
             const [___, absPath] = process.argv.slice(2);
             const filePath = absPath + "/" + query; 
