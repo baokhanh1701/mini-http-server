@@ -107,13 +107,14 @@ const server = net.createServer((socket: any) => {
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content, typeof content === "string");
 
-      const compression = req.split("Accept-Encoding")[1];
+      const compression = headers["Accept-Encoding"];
       console.log("-- compression: ", compression);
+
       let res = "";
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
-        if (compression.includes("gzip")) {
+        if (compression && compression.includes("gzip")) {
           console.log("gzip header supported, processing...");
           res = `HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
         } else {
