@@ -71,15 +71,12 @@ const server = net.createServer((socket: any) => {
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
-        try {
           if (method == "POST") {
             try {
               console.log("Creating file...");
-              fs.writeFileSync(
-                `/files/${query}`,
-                content, 'utf8');
-              console.log("Created and saved file.");
+              fs.writeFileSync(`/files/${query}`, content, "utf8");
               res = `HTTP/1.1 201 Created\r\n\r\n`;
+              console.log("Created and saved file.");
             } catch (error) {
               console.log("Something wrong with POST file.");
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
@@ -95,9 +92,6 @@ const server = net.createServer((socket: any) => {
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           }
-        } catch (error) {
-          res = `HTTP/1.1 404 Not Found\r\n\r\n`;
-        }
       } else {
         res = `HTTP/1.1 404 Not Found\r\n\r\n`;
         console.log("Response: ", res);
