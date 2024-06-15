@@ -74,11 +74,12 @@ const server = net.createServer((socket: any) => {
         try {
           if (method == "POST") {
             try {
-              console.log("creating file...")
+              console.log("Creating file...")
               fs.appendFileSync(`/files/${query}`, string(content), function (err: any, data: any) {
                 if (err) throw err;
-                console.log("Saved file.");
+                console.log("Saving file.");
               });
+              console.log("Created and saved file.");
               res = `HTTP/1.1 201 Created\r\n\r\n`;
             } catch (error) {
               console.log("Something wrong with POST file.")
