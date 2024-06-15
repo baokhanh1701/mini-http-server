@@ -53,19 +53,24 @@ const server = net.createServer((socket: any) => {
     try {
       console.log("--------------------------------")
       const req = data.toString();
-      const path = req.split("\r\n")[0].split(" ")[1];
-      const query = req.split(" ")[1].split("/")[2];
-      const userAgent = req.split("\r\n")[2].split(" ")[1];
-      const method = req.split(" ")[0];
-      const content = req.split("\r\n")[req.split("\r\n").length - 1];
-      const compression = req.split("\r\n")[2].split(": ")[1].split(", ");
-      console.log("extracted request");
       console.log("REQUEST: ", req);
+
+      const path = req.split("\r\n")[0].split(" ")[1];
       console.log("-- path: ", path);
-      console.log("-- User Agent: ", userAgent);
+
+      const query = req.split(" ")[1].split("/")[2];
       console.log("-- query: ", query);
+
+      const userAgent = req.split("\r\n")[2].split(" ")[1];
+      console.log("-- User Agent: ", userAgent);
+
+      const method = req.split(" ")[0];
       console.log("-- method: ", method);
+
+      const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content);
+
+      const compression = req.split("\r\n")[2].split(": ")[1].split(", ");
       console.log("-- compression: ", compression);
       let res = "";
       if (path === "/") {
