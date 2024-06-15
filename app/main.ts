@@ -69,10 +69,10 @@ const server = net.createServer((socket: any) => {
 
       const debugging = req.split("\r\n");
       console.log("debugging: ", debugging);
-      
+
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content);
-
+ 
       const compression = req.split("\r\n")[2].split(": ")[1].split(", ");
       console.log("-- compression: ", compression);
       let res = "";
