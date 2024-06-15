@@ -68,7 +68,8 @@ const server = net.createServer((socket: any) => {
     try {
       const req = data.toString();
       console.log("REQUEST: ", req);
-
+      const headers = extractHeader(req)
+      console.log("headers: ", headers);
       const path = req.split("\r\n")[0].split(" ")[1];
       console.log("-- path: ", path);
 
