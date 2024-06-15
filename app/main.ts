@@ -48,6 +48,7 @@ function searchDirectory(query: string, file: string) {
 }
 
 const server = net.createServer((socket: any) => {
+  console.log("----LOGGING----")
   socket.on("data", (data: any) => {
     try {
       const req = data.toString();
