@@ -77,7 +77,7 @@ const server = net.createServer((socket: any) => {
               console.log("Creating file...");
               fs.writeFileSync(
                 `/files/${query}`,
-                content);
+                content, 'utf8');
               console.log("Created and saved file.");
               res = `HTTP/1.1 201 Created\r\n\r\n`;
             } catch (error) {
