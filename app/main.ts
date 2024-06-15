@@ -71,7 +71,7 @@ const server = net.createServer((socket: any) => {
       console.log("debugging: ", debugging);
 
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
-      console.log("-- content: ", content);
+      console.log("-- content: ", content, typeof content === "string");
  
       const compression = req.split("\r\n")[2].split(": ")[1].split(", ");
       console.log("-- compression: ", compression);
