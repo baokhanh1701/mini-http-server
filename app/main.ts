@@ -59,7 +59,7 @@ const server = net.createServer((socket: any) => {
       const method = req.split(" ")[0];
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       const compression = req.split("\r\n")[2].split(": ")[1].split(", ");
-      
+      console.log("extracted request");
       console.log("REQUEST: ", req);
       console.log("-- path: ", path);
       console.log("-- User Agent: ", userAgent);
