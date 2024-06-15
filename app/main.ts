@@ -47,25 +47,27 @@ function searchDirectory(query: string, file: string) {
   }
 }
 
+function extractHeader(request: string): { [headerKey: string]: string } {
+  const headers: { [headerKey: string]: string } = {};
+  const lines = request.split("\r\n");
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line === "") {
+      break;
+    }
+    const [headerKey, headerValue] = line.split(": ");
+    headers[headerKey] = headerValue;
+    console.log(headers);
+  }
+  return headers;
+}
+
 const server = net.createServer((socket: any) => {
-  console.log("------------LOGGING------------")
+  console.log("------------LOGGING------------");
   socket.on("data", (data: any) => {
-    try {  
+    try {
       const req = data.toString();
       console.log("REQUEST: ", req);
-
-      const headers: { [headerKey: string]: string } = {};
-
-      const lines = req.split("\r\n");
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i];
-        if (line === "") {
-          break;
-        }
-        const [headerKey, headerValue] = line.split(": ");
-        headers[headerKey] = headerValue;
-        console.log(headers)
-      }
 
       const path = req.split("\r\n")[0].split(" ")[1];
       console.log("-- path: ", path);
@@ -103,7 +105,7 @@ const server = net.createServer((socket: any) => {
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
-        console.log("uh huh its still working")
+        console.log("uh huh its still working");
         try {
           if (method == "POST") {
             try {
@@ -122,7 +124,7 @@ const server = net.createServer((socket: any) => {
           } else if (method == "GET") {
             console.log("Do we even reach here?");
             const [___, absPath] = process.argv.slice(2);
-            const filePath = absPath + "/" + query; 
+            const filePath = absPath + "/" + query;
             try {
               const content = fs.readFileSync(filePath);
               res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
@@ -144,7 +146,6 @@ const server = net.createServer((socket: any) => {
       console.log("Something wrong with this server connection.");
       var string = data.toString();
       console.log(string);
-      
     }
   });
 });
@@ -155,5 +156,5 @@ console.log("Logs from your program will appear here!");
 // Uncomment this to pass the first stage
 server.listen(4221, "localhost", () => {
   console.log("Server is running on port 4221");
-  console.log("yeah still going...")
+  console.log("yeah still going...");
 });
