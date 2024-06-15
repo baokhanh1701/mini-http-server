@@ -63,15 +63,21 @@ const server = net.createServer((socket: any) => {
       console.log("-- query: ", query);
       console.log("-- method: ", method);
       console.log("-- content: ", content);
-      console.log("-- compression: ", compression)
+      console.log("-- compression: ", compression);
       let res = "";
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
-        if (compression !== 'invalid-encoding') {
+        if (compression in ["gzip", "deflate"]) {
           res = `HTTP/1.1 200 OK\r\nContent-Encoding: ${compression}\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
+        } else {
+          res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
         }
-        else res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
+
+        // if (compression !== 'invalid-encoding') {
+        //   res = `HTTP/1.1 200 OK\r\nContent-Encoding: ${compression}\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
+        // }
+        // else res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
@@ -79,7 +85,11 @@ const server = net.createServer((socket: any) => {
           if (method == "POST") {
             try {
               console.log("Creating file...");
-              fs.writeFileSync(`/tmp/data/codecrafters.io/http-server-tester/${query}`, content, "utf8");
+              fs.writeFileSync(
+                `/tmp/data/codecrafters.io/http-server-tester/${query}`,
+                content,
+                "utf8"
+              );
               res = `HTTP/1.1 201 Created\r\n\r\n`;
               console.log("Created and saved file.");
             } catch (error) {
