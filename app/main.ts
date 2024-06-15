@@ -100,6 +100,7 @@ const server = net.createServer((socket: any) => {
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           } else {
+            console.log("Do we even reach here?");
             const [___, absPath] = process.argv.slice(2);
             const filePath = absPath + "/" + query; 
             try {
