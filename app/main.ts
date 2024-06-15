@@ -54,7 +54,7 @@ const server = net.createServer((socket: any) => {
       const req = data.toString();
       console.log("REQUEST: ", req);
       
-      const line = req.spit("\r\n").trim();
+      const line = req.spit("\r\n");
       console.log("-- line: ", line);
 
       const path = req.split("\r\n")[0].split(" ")[1];
