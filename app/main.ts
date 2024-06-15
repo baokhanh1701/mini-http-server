@@ -72,10 +72,12 @@ const server = net.createServer((socket: any) => {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
         try {
-          // const data = readFileFromDir(query);
-          // searchDirectory("./", query);
           if (method == "POST") {
             try {
+              fs.appendFileSync(query, content, function (err: any, data: any) {
+                if (err) throw err;
+                console.log("Saved file.");
+              });
               res = `HTTP/1.1 201 Created\r\n\r\n`;
             } catch (error) {
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
