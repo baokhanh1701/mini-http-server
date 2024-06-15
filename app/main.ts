@@ -1,5 +1,6 @@
 import * as net from "net";
 import fs from "node:fs";
+import * as zlib from "node:zlib";
 
 //  * Normal Request: GET /index.html HTTP/1.1\r\nHost: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
 // Request Line: GET /index.html HTTP/1.1\r\n
@@ -62,10 +63,10 @@ function extractHeader(request: string): { [headerKey: string]: string } {
   return headers;
 }
 
-function extractPath(request: string): { 
-  method: string,
-  path: string,
-  protocol: string
+function extractPath(request: string): {
+  method: string;
+  path: string;
+  protocol: string;
 } {
   const lines = request.split("\r\n");
   const firstLine = lines[0];
@@ -77,36 +78,24 @@ function extractPath(request: string): {
   };
 }
 
-
 const server = net.createServer((socket: any) => {
   console.log("------------LOGGING------------");
   socket.on("data", (data: any) => {
     try {
       const req = data.toString();
       console.log("REQUEST: ", req);
-      
-      const headers = extractHeader(req)
+      const headers = extractHeader(req);
       console.log("-- headers: ", headers);
-
-      const {method, path, protocol} = extractPath(req);
+      const { method, path, protocol } = extractPath(req);
       console.log("-- method: ", method);
       console.log("-- path: ", path);
       console.log("-- protocol: ", protocol);
-      // const path = req.split("\r\n")[0].split(" ")[1];
-      // console.log("-- path: ", path);
-
       const query = req.split(" ")[1].split("/")[2];
       console.log("-- query: ", query);
-
       const userAgent = req.split("\r\n")[2].split(" ")[1];
       console.log("-- User Agent: ", userAgent);
-
-      // const method = req.split(" ")[0];
-      // console.log("-- method: ", method);
-
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       console.log("-- content: ", content, typeof content === "string");
-
       const compression = headers["Accept-Encoding"];
       console.log("-- compression: ", compression);
 
@@ -116,16 +105,12 @@ const server = net.createServer((socket: any) => {
       } else if (path === `/echo/${query}`) {
         if (compression && compression.includes("gzip")) {
           console.log("gzip header supported, processing...");
-          res = `HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
+          const gzipped = zlib.gzip(content, content)
+          res = `HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${gzipped}`;
         } else {
           console.log("gzip header not supported, processing...");
           res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
         }
-
-        // if (compression !== 'invalid-encoding') {
-        //   res = `HTTP/1.1 200 OK\r\nContent-Encoding: ${compression}\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
-        // }
-        // else res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
