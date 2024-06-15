@@ -134,4 +134,5 @@ console.log("Logs from your program will appear here!");
 // Uncomment this to pass the first stage
 server.listen(4221, "localhost", () => {
   console.log("Server is running on port 4221");
+  console.log("yeah still going...")
 });
