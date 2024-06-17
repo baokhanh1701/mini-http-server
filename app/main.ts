@@ -95,6 +95,7 @@ const server = net.createServer((socket: any) => {
 
       let res = "";
       if (path === "/") {
+        
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
         if (compression && compression.includes("gzip")) {
