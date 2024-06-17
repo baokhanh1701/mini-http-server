@@ -32,6 +32,11 @@ export default class HttpHandler {
       protocol,
     };
   }
+
+  public extractQuery(request: string):  string {
+    const lines = request.split("\r\n")[2];
+    return lines.split(" ")[1];
+  }
   
   private HttpResponseBuilder (
     statusCode: number,
@@ -50,4 +55,5 @@ export default class HttpHandler {
     ].join("\r\n");
     return response;
   }
+
 }

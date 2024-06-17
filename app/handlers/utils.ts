@@ -1,7 +1,7 @@
 import fs from "node:fs";
 
 export default class Utils {
-  private readFileFromDir(query: string) {
+  public readFileFromDir(query: string) {
     try {
       const data = fs.readFileSync(query);
       return data;
@@ -11,7 +11,7 @@ export default class Utils {
     }
   }
 
-  private searchDirectory(query: string, file: string) {
+  public searchDirectory(query: string, file: string) {
     try {
       console.log(`==== CURRENT PATH: ${query} ====`);
       console.log(`==== FILE: ${file} ====`);
