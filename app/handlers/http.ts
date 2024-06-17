@@ -28,7 +28,7 @@ export default class HttpHandler {
     const [method, path, protocol] = firstLine.split(" ");
     return {
       method,
-      path: path,
+      path,
       protocol,
     };
   }
