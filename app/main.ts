@@ -87,9 +87,8 @@ const server = net.createServer((socket: any) => {
     try {
       const req = data.toString();
       const headers = httpHandler.extractHeader(req);
-      const { method, path, protocol } = extractPath(req);
-      console.log("path: ", path)
-      const query = httpHandler.extractQuery(req);
+      const { method, path, protocol } = httpHandler.extractPath(req);
+      const query = req.split("\r\n")[2].split(" ")[1];
       const userAgent = req.split("\r\n")[2].split(" ")[1];
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       const compression = headers["Accept-Encoding"];
