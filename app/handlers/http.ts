@@ -1,10 +1,10 @@
 export default class HttpHandler {
-  private readonly path: string;
-  constructor(path: string) {
-    this.path = path;
-  }
+  // private readonly path: string;
+  // constructor(path: string) {
+  //   this.path = path;
+  // }
 
-  private extractHeader(request: string): { [headerKey: string]: string } {
+  public extractHeader(request: string): { [headerKey: string]: string } {
     const headers: { [headerKey: string]: string } = {};
     const lines = request.split("\r\n");
     for (let i = 0; i < lines.length; i++) {
@@ -18,7 +18,7 @@ export default class HttpHandler {
     return headers;
   }
 
-  private extractPath(request: string): { 
+  public extractPath(request: string): { 
     method: string,
     path: string[],
     protocol: string

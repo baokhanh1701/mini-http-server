@@ -1,7 +1,8 @@
 import * as net from "net";
 import fs from "node:fs";
 import * as zlib from "node:zlib";
-
+import HttpHandler from "./handlers/http";
+import Utils from "./handlers/utils";
 //  * Normal Request: GET /index.html HTTP/1.1\r\nHost: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
 // Request Line: GET /index.html HTTP/1.1\r\n
 // Headers: Host: localhost:4221\r\nUser-Agent: curl/7.64.1\r\nAccept: */*\r\n\r\n
@@ -79,47 +80,34 @@ function extractPath(request: string): {
 }
 
 const server = net.createServer((socket: any) => {
+  const httpHandler = new HttpHandler();
+  const utilsHandler = new Utils();
   console.log("------------LOGGING------------");
   socket.on("data", (data: any) => {
     try {
       const req = data.toString();
-      console.log("REQUEST: ", req);
-      const headers = extractHeader(req);
-      console.log("-- headers: ", headers);
+      const headers = httpHandler.extractHeader(req);
       const { method, path, protocol } = extractPath(req);
-      console.log("-- method: ", method);
-      console.log("-- path: ", path);
-      console.log("-- protocol: ", protocol);
       const query = req.split(" ")[1].split("/")[2];
-      console.log("-- query: ", query);
       const userAgent = req.split("\r\n")[2].split(" ")[1];
-      console.log("-- User Agent: ", userAgent);
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
-      console.log("-- content: ", content, typeof content === "string");
       const compression = headers["Accept-Encoding"];
-      console.log("-- compression: ", compression);
 
       let res = "";
       if (path === "/") {
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
         if (compression && compression.includes("gzip")) {
-          console.log("gzip header supported, processing...");
           const buffer = Buffer.from(query, "utf8");
           const gzipped = zlib.gzipSync(buffer);
-          console.log("buffer: ", buffer);
-          console.log("gzipped: ", gzipped);
           socket.write(`HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: ${gzipped.length}\r\n\r\n`);
           socket.write(gzipped);
-          console.log("done zipping");
         } else {
-          console.log("gzip header not supported, processing...");
           res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${query.length}\r\n\r\n${query}`;
         }
       } else if (path === `/user-agent`) {
         res = `HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: ${userAgent.length}\r\n\r\n${userAgent}`;
       } else if (path === `/files/${query}`) {
-        console.log("uh huh its still working");
         try {
           if (method == "POST") {
             try {
@@ -130,20 +118,16 @@ const server = net.createServer((socket: any) => {
                 "utf8"
               );
               res = `HTTP/1.1 201 Created\r\n\r\n`;
-              console.log("Created and saved file.");
             } catch (error) {
-              console.log("Something wrong with POST file.");
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           } else if (method == "GET") {
-            console.log("Do we even reach here?");
             const [___, absPath] = process.argv.slice(2);
             const filePath = absPath + "/" + query;
             try {
               const content = fs.readFileSync(filePath);
               res = `HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: ${content.length}\r\n\r\n${content}`;
             } catch (error) {
-              console.log("Something wrong with GET file.");
               res = `HTTP/1.1 404 Not Found\r\n\r\n`;
             }
           }
@@ -157,7 +141,6 @@ const server = net.createServer((socket: any) => {
       socket.write(res);
       socket.end();
     } catch (error) {
-      console.log("Something wrong with this server connection.");
       var string = data.toString();
       console.log(string);
     }
