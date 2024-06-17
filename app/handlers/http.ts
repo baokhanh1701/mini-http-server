@@ -1,3 +1,22 @@
+interface HttpRequest {
+  headers: { [headerKey: string]: string };
+  method: string;
+  path: string;
+  protocol: string;
+  userAgent: string;
+  body?: string;
+}
+
+interface HttpResponse {
+  statusCode: number;
+  statusMessage: string;
+  headers: { [headerKey: string]: string };
+  body?: string;
+}
+interface Builder {
+  build(): void;
+  setHeader(): void;
+}
 export default class HttpHandler {
   // private readonly path: string;
   // constructor(path: string) {
@@ -18,7 +37,7 @@ export default class HttpHandler {
     return headers;
   }
 
-  public extractQuery(request: string):  string {
+  public extractQuery(request: string): string {
     return request.split(" ")[1].split("/")[2];
   }
 
@@ -37,24 +56,22 @@ export default class HttpHandler {
       protocol,
     };
   }
-  
 
-  private HttpResponseBuilder (
+  private HttpResponseBuilder(
     statusCode: number,
     statusMessage: string,
     headers: { [headerKey: string]: string },
     body?: string
-  ) : string {
+  ): string {
     const headerLines = Object.keys(headers).map((headerKey) => {
       return `${headerKey}: ${headers[headerKey]}`;
     });
     const response = [
       `HTTP/1.1 ${statusCode} ${statusMessage}`,
-     ...headerLines,
+      ...headerLines,
       "",
       body,
     ].join("\r\n");
     return response;
   }
-
 }
