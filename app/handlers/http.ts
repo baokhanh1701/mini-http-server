@@ -18,6 +18,11 @@ export default class HttpHandler {
     return headers;
   }
 
+  public extractQuery(request: string):  string {
+    const lines = request.split("\r\n")[2];
+    return lines.split("/")[1];
+  }
+
   public extractPath(request: string): {
     method: string;
     path: string;
@@ -25,6 +30,7 @@ export default class HttpHandler {
   } {
     const lines = request.split("\r\n");
     const firstLine = lines[0];
+    console.log(firstLine);
     const [method, path, protocol] = firstLine.split(" ");
     return {
       method,
@@ -32,12 +38,8 @@ export default class HttpHandler {
       protocol,
     };
   }
-
-  public extractQuery(request: string):  string {
-    const lines = request.split("\r\n")[2];
-    return lines.split("/")[1];
-  }
   
+
   private HttpResponseBuilder (
     statusCode: number,
     statusMessage: string,
