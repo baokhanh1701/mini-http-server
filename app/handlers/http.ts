@@ -29,7 +29,7 @@ export default class HttpHandler {
   } {
     const lines = request.split("\r\n");
     const firstLine = lines[0];
-    console.log(firstLine);
+    console.log("extractPath - firstLine: ", firstLine);
     const [method, path, protocol] = firstLine.split(" ");
     return {
       method,
