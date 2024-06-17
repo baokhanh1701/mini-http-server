@@ -18,11 +18,11 @@ export default class HttpHandler {
     return headers;
   }
 
-  public extractPath(request: string): { 
-    method: string,
-    path: string,
-    protocol: string
- } {
+  public extractPath(request: string): {
+    method: string;
+    path: string;
+    protocol: string;
+  } {
     const lines = request.split("\r\n");
     const firstLine = lines[0];
     const [method, path, protocol] = firstLine.split(" ");
