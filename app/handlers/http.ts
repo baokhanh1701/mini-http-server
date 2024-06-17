@@ -19,7 +19,7 @@ export default class HttpHandler {
   }
 
   public extractQuery(request: string):  string {
-    const lines = request.split("\r\n")[2];
+    const lines = request.split(" ")[1];
     return lines.split("/")[2];
   }
 

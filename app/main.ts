@@ -88,14 +88,13 @@ const server = net.createServer((socket: any) => {
       const req = data.toString();
       const headers = httpHandler.extractHeader(req);
       const { method, path, protocol } = httpHandler.extractPath(req);
-      const query = httpHandler.extractQuery(req);
+      const query = httphandler.extractQuery(req);
       const userAgent = req.split("\r\n")[2].split(" ")[1];
       const content = req.split("\r\n")[req.split("\r\n").length - 1];
       const compression = headers["Accept-Encoding"];
 
       let res = "";
       if (path === "/") {
-        
         res = `HTTP/1.1 200 OK\r\n\r\n`;
       } else if (path === `/echo/${query}`) {
         if (compression && compression.includes("gzip")) {
